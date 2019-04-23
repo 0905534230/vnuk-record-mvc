@@ -15,12 +15,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import vn.edu.vnuk.record.mvc.action.contact.Update;
 import vn.edu.vnuk.record.mvc.dao.ContactDao;
 import vn.edu.vnuk.record.mvc.model.Contact;
 
 @SuppressWarnings("serial")
-@WebServlet("/addContact")
-public class AddContactServlet extends HttpServlet {
+@WebServlet("/updateContact")
+public class UpdateContactServlet extends HttpServlet {
 
 	protected void service(HttpServletRequest request,
 			HttpServletResponse response)
@@ -44,44 +45,71 @@ public class AddContactServlet extends HttpServlet {
 		Calendar dateOfBirth = null;
 		
 		// 	converting string to data
-		try {
-			Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dateInStringFormat);
-			dateOfBirth = Calendar.getInstance();
-			dateOfBirth.setTime(date);
-		} 
 		
-		catch (ParseException e) {
-			out.println("Error while converting date");
-			return;
-		}
 		
 		//	building an Contact object
-		Contact contact = new Contact();
-		contact.setName(name);
-		contact.setAddress(address);
-		contact.setEmail(email);
-		contact.setDateOfBirth(dateOfBirth);
 		
-		// 	save contact in DB
-		ContactDao dao = new ContactDao();
+		Contact myContact = null ;
+		ContactDao contactDao = new ContactDao();
+		Long id = Update.id;
+		
 		
 		try {
-			dao.create(contact);
+			myContact = new ContactDao().read(id);
+			if (name!="") {
+				myContact.setName(name);
+			}
+			
+			if (address!="") {
+				myContact.setAddress(address);
+			}
+			
+			if (email!="") {
+				myContact.setEmail(email);
+			}
+			
+			if (dateInStringFormat!="") {
+				try {
+					Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dateInStringFormat);
+					dateOfBirth = Calendar.getInstance();
+					dateOfBirth.setTime(date);
+				} 
+				
+				catch (ParseException e) {
+					out.println("Error while converting date");
+					return;
+				}
+				myContact.setDateOfBirth(dateOfBirth);
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		// 	save contact in DB
+		
+		try {
+			contactDao.update(myContact);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		// 	display name of the new contact
+		
 		try {
 			request.setAttribute("myContacts",new ContactDao().read());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		RequestDispatcher requesDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/contact/index.jsp");
 		requesDispatcher.forward(request,response);
-
+		
 	}
 	
 }

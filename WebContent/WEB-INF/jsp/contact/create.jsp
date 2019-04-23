@@ -3,10 +3,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	
+		<link rel="stylesheet" type="text/css" href="css/index.css">
 		<link rel="stylesheet"  type="text/css" href="css/jquery-ui.css">
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/jquery-ui.js"></script>
+		<link href="bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 		
         <meta charset="UTF-8">
         <title>Adding contacts</title>
@@ -21,37 +22,16 @@
         <h1>Add contacts</h1>
 
         <form action="addContact" method="POST">
-<!--         	<div>
-        		<label for="name">Name: </label>
-            	<input type="text" name="name" id="name">
-            </div>
-            
-        	<div>
-        		<label for="email">E-mail: </label>
-            	<input type="text" name="email" id="email">
-            </div>
-            
-        	<div>
-        		<label for="address">Address: </label>
-            	<input type="text" name="address" id="address">
-            </div> -->
-            
-       <!-- 	<div>
-        		<label for="date-of-birth">Date of birth: </label>
-            	<input type="text" name="date_of_birth" id="date-of-birth">
-            		<script>
-            			$("#date-of-birth").datepicker({dateFormat:'dd/MM/yy'});
-            		</script>         		
-            </div>  --> 
-            
+           
             <vnuk:myNameField name="name" id="name" label="Name"/>
             <vnuk:myNameField name="address" id="address" label="Address"/>
             <vnuk:myNameField name="email" id="email" label="E-mail"/>
             <vnuk:myDateField name="date_of_birth" id="date-of-birth" label="Date of birth"/>
                         
-            <input type="submit" value="Save" />
+            <input class="btn btn-success" type="submit" value="Save" />
+            <input class="btn btn-xs btn-success" id = "return" type="button" value="Cancel" onclick="window.history.back()">
+            
         </form>
+        <c:import url="footer.jsp" />
 		
-		<c:import url="footer.jsp" />
-    </body>
 </html>
